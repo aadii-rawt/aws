@@ -1,0 +1,19 @@
+name : Deploy to staging
+on : 
+  push : 
+    branches : 
+      - main 
+
+jobs : 
+  redeploy_everyting:
+    name: Deploy everying to staging cluster 
+
+    steps: 
+      - name : SSH into server
+      - run : |
+          echo ${{ secrets.SSH_PRIVATE_KEY }} &> ~/ssh_key 
+          ssh -i ~/ssh_key root@16.171.170.144
+          cd aws && git pull
+          npm run build
+          pm2 restart
+       
