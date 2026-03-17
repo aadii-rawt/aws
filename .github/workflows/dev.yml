@@ -1,19 +1,43 @@
-name : Deploy to staging
-on : 
-  push : 
-    branches : 
+name: Deploy to EC2
+on: 
+  push: 
+    branches: 
       - main 
 
-jobs : 
-  redeploy_everyting:
-    name: Deploy everying to staging cluster 
+jobs: 
+  deploy: ubuntu-latest
+  steps: 
+    - name: 🚀 Starting Deployment
+      run: echo "Deployment started..."
 
-    steps: 
-      - name : SSH into server
-      - run : |
-          echo ${{ secrets.SSH_PRIVATE_KEY }} &> ~/ssh_key 
-          ssh -i ~/ssh_key root@16.171.170.144
-          cd aws && git pull
-          npm run build
-          pm2 restart
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v3
+    - name: 🔐 Connecting to EC2 & Deploying
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "✅ Connected to EC2"
+
+            echo "📂 Moving to project directory..."
+            cd /aws
+            echo "📍 Current directory:"
+            pwd
+            echo "🔄 Pulling latest code from GitHub..."
+            git pull origin main
+            echo "📦 Installing dependencies..."
+            npm install
+            echo "🧠 Checking PM2 processes..."
+            pm2 list
+            echo "🔁 Restarting app..."
+            pm2 restart cicd
+
+            echo "📊 PM2 status after restart:"
+            pm2 list
+
+            echo "🎉 Deployment completed successfully!"
+
+
        
