@@ -5,7 +5,7 @@ on:
       - main 
 
 jobs: 
-  deploy: ubuntu-latest
+  deploy: ubuntu
   steps: 
     - name: 🚀 Starting Deployment
       run: echo "Deployment started..."
