@@ -24,7 +24,7 @@ jobs:
               echo "✅ Connected to EC2"
 
               echo "📂 Moving to project directory..."
-              cd /aws
+              cd /home/ubuntu/aws
               echo "📍 Current directory:"
               pwd
               echo "🔄 Pulling latest code from GitHub..."
