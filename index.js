@@ -13,7 +13,7 @@ app.get("/api/data", (req, res) => {
 
 
 app.get("/api/test", (req, res) => {
-  res.json({ message: "docker file is running." });
+  res.json({ message: "docker file is running..." });
 });
 
 app.listen(8000, () => {
