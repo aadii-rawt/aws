@@ -3,7 +3,7 @@ import express from "express";
 // this is dev directory
 const app = express(); 
 app.get("/", (req, res) => {
-  res.send("hello world docker working  ");
+  res.send("hello world docker working..");
 });
 
 
