@@ -5,39 +5,40 @@ on:
       - main 
 
 jobs: 
-  deploy: ubuntu
-  steps: 
-    - name: 🚀 Starting Deployment
-      run: echo "Deployment started..."
+  deploy:
+    runs-on: ubuntu-latest  
+    steps: 
+      - name: 🚀 Starting Deployment
+        run: echo "Deployment started..."
 
-    - name: 📥 Checkout Code
-      uses: actions/checkout@v3
-    - name: 🔐 Connecting to EC2 & Deploying
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            echo "✅ Connected to EC2"
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v3
+      - name: 🔐 Connecting to EC2 & Deploying
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+            host: ${{ secrets.EC2_HOST }}
+            username: ${{ secrets.EC2_USER }}
+            key: ${{ secrets.EC2_SSH_KEY }}
+            script: |
+              echo "✅ Connected to EC2"
 
-            echo "📂 Moving to project directory..."
-            cd /aws
-            echo "📍 Current directory:"
-            pwd
-            echo "🔄 Pulling latest code from GitHub..."
-            git pull origin main
-            echo "📦 Installing dependencies..."
-            npm install
-            echo "🧠 Checking PM2 processes..."
-            pm2 list
-            echo "🔁 Restarting app..."
-            pm2 restart cicd
+              echo "📂 Moving to project directory..."
+              cd /aws
+              echo "📍 Current directory:"
+              pwd
+              echo "🔄 Pulling latest code from GitHub..."
+              git pull origin main
+              echo "📦 Installing dependencies..."
+              npm install
+              echo "🧠 Checking PM2 processes..."
+              pm2 list
+              echo "🔁 Restarting app..."
+              pm2 restart cicd
 
-            echo "📊 PM2 status after restart:"
-            pm2 list
+              echo "📊 PM2 status after restart:"
+              pm2 list
 
-            echo "🎉 Deployment completed successfully!"
+              echo "🎉 Deployment completed successfully!"
 
 
-       
+        
